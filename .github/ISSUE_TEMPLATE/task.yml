@@ -1,0 +1,32 @@
+name: ODTS Task
+description: Create an actionable unit of work below an Item
+type: ODTS TASK
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Set **ODTS Task Subtype** using GitHub's native issue fields. Set optional team planning fields when your team uses them. Attach the new Task to exactly one Parent Item.
+
+  - type: textarea
+    id: work
+    attributes:
+      label: Work
+      description: What concrete work will be performed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: What observable result completes this Task?
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Documentation and validation plan
+      description: Which code documentation and tests will be created before implementation? If a test is not possible, explain why and name the alternative validation.
+    validations:
+      required: true

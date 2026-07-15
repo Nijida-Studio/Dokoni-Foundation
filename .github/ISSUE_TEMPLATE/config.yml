@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: ODTS Documentation
+    url: https://github.com/Nijida-Studio/ODTS-Home
+    about: Read the ODTS workflow and issue model before creating an issue.

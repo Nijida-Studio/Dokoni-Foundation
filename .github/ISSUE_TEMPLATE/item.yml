@@ -1,0 +1,30 @@
+name: ODTS Item
+description: Create a coherent implementation area below an Epic
+type: ODTS ITEM
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Set **ODTS Item Subtype** using GitHub's native issue fields. Set optional team planning fields when your team uses them. Attach the new Item to exactly one Parent Epic.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Intended outcome
+      description: What coherent result should this Item deliver?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What must be true for this Item to be complete?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Optional constraints, related issues, or background.

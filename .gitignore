@@ -1,0 +1,57 @@
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.Spotlight-V100/
+.Trashes/
+.TemporaryItems/
+
+# Temporary files and directories
+[Tt]emp/
+[Tt]mp/
+.tmp/
+*.tmp
+*.temp
+*.log
+*.bak
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+*.swn
+.#*
+\#*#
+.history/
+
+# Development environment user data
+.vs/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/shelf/
+.idea/**/httpRequests/
+.idea/**/caches/
+*.xcuserstate
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+
+# Build products and caches
+.build/
+[Bb]uild/
+dist/
+out/
+target/
+.cache/
+.gradle/
+coverage/
+node_modules/
+__pycache__/
+*.pyc
+*.o
+*.obj
+*.class

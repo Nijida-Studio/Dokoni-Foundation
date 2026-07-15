@@ -1,0 +1,30 @@
+name: ODTS Epic
+description: Create a strategic goal, workflow goal, architectural direction, or requirement
+type: ODTS EPIC
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Set **ODTS Epic Subtype** using GitHub's native issue fields. Set optional team planning fields when your team uses them.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What outcome should this Epic achieve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: success
+    attributes:
+      label: Success criteria
+      description: How will the organization know that the Epic is complete?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Optional constraints, related issues, or background.
