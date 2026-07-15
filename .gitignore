@@ -39,6 +39,12 @@ $RECYCLE.BIN/
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
 DerivedData/
+.swiftpm/
+**/bin/
+**/obj/
+.nuget/
+*.suo
+*.user
 
 # Build products and caches
 .build/
