@@ -1,6 +1,9 @@
 blank_issues_enabled: false
 
 contact_links:
+  - name: ODTS Specification
+    url: https://github.com/Nijida-Studio/ODTS-Specification
+    about: The ODTS Specification is the authoritative source for current ODTS behavior.
   - name: ODTS Documentation
     url: https://github.com/Nijida-Studio/ODTS-Home
-    about: Read the ODTS workflow and issue model before creating an issue.
+    about: Human-readable guidance that may describe an earlier ODTS version or contain documentation differences.

@@ -1,0 +1,10 @@
+labels:
+  source: .github/labels.json
+  synchronization_workflow: .github/workflows/odts-labels.yml
+  project_specific_additions_allowed: true
+
+github_pages:
+  required_when_repository_publishes_a_website: true
+  branch: gh_pages
+  deployment: github-actions
+  workflow: .github/workflows/jekyll-gh-pages.yml
