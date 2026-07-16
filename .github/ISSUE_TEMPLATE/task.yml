@@ -7,6 +7,15 @@ body:
       value: |
         Set **ODTS Task Subtype** using GitHub's native issue fields. Set optional team planning fields when your team uses them. Attach the new Task to exactly one Parent Item.
 
+  - type: input
+    id: odts_version
+    attributes:
+      label: ODTS Version
+      description: The ODTS version under which this issue is created. Keep this value unchanged unless the issue is intentionally migrated.
+      value: "1.9.5"
+    validations:
+      required: true
+
   - type: textarea
     id: work
     attributes:
