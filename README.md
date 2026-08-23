@@ -11,8 +11,9 @@ application repositories.
 
 ## Initial modules
 
-- **LocalSettings** reads, writes, migrates, and manages settings that belong to
-  the local installation.
+- **DataStorage** reads and writes opaque data without owning its format.
+- **LocalSettings** models, reads, modifies, and manages settings belonging to
+  the local installation. It uses DataStorage for persistence.
 - **ServiceAccess** models and manages access to local, LAN, and WAN services.
   GitHub, WebDAV, CalDAV, and SMB are example service adapters.
 - **DataDistribution** coordinates distribution of settings and user data,
@@ -26,14 +27,23 @@ docs/
   architecture.md
   modules.md
 src/
+  DataStorage/
+    API/
+    Models/
+    Store/
   LocalSettings/
+    API/
+    Models/
+    Store/
   ServiceAccess/
   DataDistribution/
 ```
 
-Each module is self-contained. Its future source layout may include a portable
-Swift core plus explicit platform, UI-integration, interop, test, and build
-areas. Swift is the default implementation language for shared behavior on all
+The first module structures contain only responsibilities that are already
+known. Platform, UI, interop, test, and build areas are added when concrete
+implementation requires them.
+
+Swift is the default implementation language for shared behavior on all
 supported platforms. .NET code is added where managed bindings or Avalonia UI
 integration require it; it is not a separate parallel implementation root.
 
