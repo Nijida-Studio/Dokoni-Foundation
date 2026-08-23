@@ -18,106 +18,69 @@ Platform-neutral Swift core
 Platform SDKs and established third-party libraries
 ```
 
-Dokoni itself is the central application of the ecosystem, but Foundation is
-not part of Dokoni's application-specific core. Foundation libraries must
-remain consumable by multiple ecosystem applications independently.
-
 ## Ownership boundaries
 
-### Foundation owns
+Foundation owns reusable capabilities required by multiple ecosystem
+applications, their platform-neutral contracts and Swift implementations,
+explicit adapters, bindings, and optional reusable UI integration.
 
-- reusable capabilities required by multiple ecosystem applications,
-- platform-neutral contracts and Swift implementations,
-- explicit platform adapters,
-- interop bindings required to consume Swift modules from .NET,
-- optional reusable SwiftUI or Avalonia integration modules,
-- cross-application semantics, test fixtures, and compatibility guidance.
-
-### Applications own
-
-- complete screens, navigation, and product-specific interaction,
-- application workflows and product decisions,
-- libraries and UI integration used by only that application,
-- composition of Foundation capabilities into application behavior.
-
-### External dependencies own
-
-- general-purpose functionality that is not specific to the Dokoni ecosystem,
-- platform SDKs and established third-party protocols or clients.
-
-Foundation may wrap an external dependency behind a stable ecosystem contract
-when multiple applications require the same behavior. It should not duplicate
-an external library merely to place it under the Dokoni name.
+Applications retain complete screens, navigation, product workflows, and
+libraries or UI needed by only one application.
 
 ## Library-first source model
 
 The repository uses one directory per Foundation library under `src/`.
 Implementation language is not a top-level organizational boundary.
 
-A library may evolve toward this internal shape when concrete code requires it:
+The first concrete structure is intentionally small:
 
 ```text
 src/<Library>/
   README.md
-  Sources/
-    Core/
-    Platforms/
-      Apple/
-      Windows/
-      Linux/
-      Android/
-    UI/
-      SwiftUI/
-      Avalonia/
-    Interop/
-      CAPI/
-      DotNet/
-  Tests/
-  Build/
-    README.md
-    apple.md
-    windows.md
-    linux.md
-    android.md
+  API/
+  Models/
+  Store/
 ```
 
-These directories are created only when the corresponding implementation
-exists. Swift Package Manager targets, C/C++ bridge targets, .NET projects, and
-Avalonia control libraries remain separate build units even when they belong to
-the same Foundation library.
+- `Models/` describes the data owned by the module.
+- `Store/` contains storage or management responsibilities owned by the module.
+- `API/` describes the interface through which other modules use it.
+
+Platform, UI, binding, test, and build areas are added later when concrete code
+requires them. Build-system target boundaries may refine this logical layout
+without changing module ownership.
+
+## Data and settings boundary
+
+DataStorage reads and writes opaque data. It does not understand, decode, or
+modify the content semantically.
+
+LocalSettings owns the settings format and behavior:
+
+```text
+DataStorage reads bytes
+        |
+LocalSettings decodes, modifies, and encodes settings
+        |
+DataStorage writes the resulting bytes
+```
+
+This keeps persistence locations independent from settings models and formats.
 
 ## Core and UI dependency rule
 
-A library's platform-neutral Swift core must not depend on SwiftUI, Avalonia,
-an application, or an application workflow. Platform adapters, bindings, and UI
+A platform-neutral core must not depend on SwiftUI, Avalonia, an application,
+or an application workflow. Platform adapters, bindings, and optional UI
 integration may depend on the core. The dependency direction must never be
 reversed.
-
-Reusable UI integration is permitted only as an optional module. It should
-provide focused controls, views, presentation models, or embedding adapters. It
-must not become a shared copy of an application's navigation or complete user
-experience.
 
 ## Platform model
 
 Shared behavior is designed in Swift for Apple, Windows, GNU/Linux, and Android.
-Platform-specific behavior is isolated in platform targets or directories.
 SwiftUI provides Apple UI integration. Avalonia and its managed .NET binding
 layer provide UI integration for Windows, GNU/Linux, and Android.
 
 A separate .NET reimplementation is an exception rather than the default.
-Equivalent behavior implemented more than once must follow shared documented
-semantics and contract tests.
-
-When a capability spans platforms, its module documentation should define:
-
-- responsibility and non-goals,
-- public concepts and behavior,
-- error and cancellation semantics,
-- data ownership, credentials, privacy, and sharing expectations,
-- platform-specific deviations,
-- compatibility and versioning expectations,
-- general build steps and platform-specific build additions.
 
 ## Initial dependency direction
 
@@ -130,6 +93,9 @@ ServiceAccess
   └──> LocalSettings (non-secret connection metadata only)
 
 LocalSettings
+  └──> DataStorage
+
+DataStorage
   └──> no other Foundation module
 ```
 
@@ -140,11 +106,7 @@ secure platform credential storage through an explicit abstraction.
 
 1. Record at least two intended consumers.
 2. Define the capability boundary and public contract.
-3. Define core, platform, binding, and optional UI targets.
+3. Add only the structure required by the first implementation.
 4. Add tests before or alongside implementation where technically possible.
 5. Document general and platform-specific build requirements.
 6. Version and release modules so applications can update deliberately.
-
-Moving an existing app-specific library or UI component into Foundation
-requires an explicit contract review. Source code should not be copied merely
-because a second consumer appears.
