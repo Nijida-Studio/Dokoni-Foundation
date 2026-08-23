@@ -1,45 +1,79 @@
 # Module Catalog
 
-This catalog records shared capabilities before concrete package names and APIs
-are finalized.
+The repository is organized by library. Concrete package and target names remain
+open until the first contracts and consumers are defined.
 
-## Foundation capabilities
+## LocalSettings
 
-**Status:** Planned
+**Status:** Accepted module; public API not yet defined
 
-**Initial consumers:** Kizuna, Akari CE
+LocalSettings reads, writes, validates, migrates, and manages settings that
+belong to one local installation.
 
-This area will contain the smallest common technical building blocks that are
-actually required by both applications. No specific logging, configuration,
-localization, serialization, or dependency-injection API is accepted merely by
-being generally useful; each capability must have a demonstrated multi-app need
-before implementation.
+It should define:
 
-## GitHub capability
+- typed settings and defaults,
+- schema/version migration,
+- atomic updates and recovery,
+- observation of local changes,
+- separation of ordinary settings from credentials,
+- platform storage locations through adapters,
+- deterministic in-memory test storage.
 
-**Status:** Planned
+LocalSettings does not decide whether settings are synchronized to another
+device or shared with another person. That belongs to DataDistribution.
 
-**Initial consumers:** Kizuna, Souran
+## ServiceAccess
 
-The reusable GitHub layer belongs in Foundation because both applications need
-access to GitHub. It should own provider-level concepts and operations that are
-independent of either application's workflow.
+**Status:** Accepted module; public API not yet defined
 
-Kizuna continues to own synchronization between GitHub and personal
-productivity systems. Souran will own its SCM and DevOps workflows. Foundation
-must not absorb those product-specific responsibilities.
+ServiceAccess models and manages access to services reachable locally, through
+a LAN, or through a WAN. Examples include GitHub, WebDAV, CalDAV, and SMB.
 
-The first contract definition should decide:
+It should define:
 
-- authentication abstraction and credential ownership,
-- repository and issue identifiers,
-- read, create, and update operations,
-- pagination, rate-limit, error, and cancellation behavior,
-- test doubles and safe integration-test boundaries,
-- which behavior is required in Swift and .NET.
+- service and endpoint identity,
+- connection profiles and capability discovery,
+- authentication references without treating secrets as ordinary settings,
+- connectivity, availability, error, cancellation, and retry semantics,
+- provider/protocol adapters,
+- safe test doubles and integration-test boundaries.
 
-## Candidate capabilities
+ServiceAccess provides access to services; it does not own Kizuna
+synchronization, Souran DevOps workflows, or another application's product
+logic. The existing shared GitHub capability becomes a ServiceAccess adapter
+rather than a separate top-level module.
 
-Future candidates such as Git, OAuth, settings, localization, serialization,
-notifications, or Markdown remain unaccepted until at least two concrete
-consumers and a UI-independent boundary have been identified.
+## DataDistribution
+
+**Status:** Accepted module; public API not yet defined
+
+DataDistribution coordinates how settings and user data move beyond one local
+installation.
+
+It distinguishes at least:
+
+- synchronization for the same user across that user's devices,
+- distribution through a provider such as iCloud,
+- explicit sharing with another person,
+- explicit family sharing,
+- ownership, permissions, revocation, conflict handling, and provenance.
+
+DataDistribution may use LocalSettings for local state and ServiceAccess for
+transports and provider access. It must not assume that device synchronization,
+person-to-person sharing, and family sharing have identical authorization or
+privacy semantics.
+
+## Optional UI integration
+
+Every module may later add optional SwiftUI or Avalonia targets for focused,
+reusable embedding components. The platform-neutral core remains UI-independent.
+Complete screens, navigation, and application workflows remain in the consuming
+applications.
+
+## Admission and implementation status
+
+The three modules are accepted as the initial Foundation structure by explicit
+maintainer decision. Before concrete public APIs are finalized, their first
+consumers, supported platforms, target boundaries, test contracts, and release
+channels must be recorded.
