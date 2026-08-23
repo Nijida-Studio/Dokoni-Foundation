@@ -1,29 +1,19 @@
 # LocalSettings
 
-LocalSettings is the Foundation module for settings that belong to one local
-installation.
+LocalSettings manages settings that belong to one local installation.
 
-## Responsibility
+## Initial structure
 
-- read and write local settings,
-- provide defaults and validation,
-- migrate stored schemas,
-- support atomic updates and recovery,
-- expose local change observation,
-- isolate platform-specific storage locations,
-- provide deterministic test storage.
+- `Models/` contains the settings data owned by this module.
+- `Store/` reads, modifies, and manages settings.
+- `API/` contains the interface used by other modules to query or change settings.
 
-Credentials and other secrets are not ordinary settings. Synchronization or
-sharing of settings belongs to DataDistribution.
+LocalSettings owns the settings format. It uses DataStorage to read opaque data
+and write the encoded result back to its storage location.
 
-## Planned internal structure
+Credentials and secrets are not ordinary settings. Synchronization or sharing
+belongs to DataDistribution.
 
-The portable implementation is written in Swift. Concrete code may introduce
-separate targets under `Sources/Core`, `Sources/Platforms/<Platform>`,
-`Sources/UI/SwiftUI`, `Sources/UI/Avalonia`, and
-`Sources/Interop/<Binding>`. General build instructions belong under
-`Build/README.md`; platform additions belong in separate files under
-`Build/`.
-
-Only directories backed by concrete code or instructions should be added.
-Public APIs remain undefined until consumers and contract tests are recorded.
+The first implementation will use platform-neutral Swift and then add the
+required Apple-specific Swift parts. Further structure is added only when the
+implementation needs it.
