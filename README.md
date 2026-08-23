@@ -1,44 +1,59 @@
 # Dokoni Foundation
 
-Dokoni Foundation contains reusable, user-interface-independent libraries for
-applications in the Dokoni ecosystem.
+Dokoni Foundation contains reusable libraries for applications in the Dokoni
+ecosystem.
 
-The repository is the shared technical layer between applications. It does not
-contain SwiftUI, Avalonia, or other platform-specific user interfaces, and it is
-not a home for libraries used by only one application.
+The repository is organized by library rather than by implementation language.
+Each library owns a platform-neutral Swift core and may add platform adapters,
+interop bindings, and optional reusable SwiftUI or Avalonia integration modules.
+Application-specific screens, navigation, and workflows remain in their owning
+application repositories.
 
-## Initial consumers
+## Initial modules
 
-- **Kizuna** and **Akari CE** are the first applications expected to consume
-  common Foundation libraries.
-- A shared GitHub capability is intended for **Kizuna** and the future
-  **Souran** project.
+- **LocalSettings** reads, writes, migrates, and manages settings that belong to
+  the local installation.
+- **ServiceAccess** models and manages access to local, LAN, and WAN services.
+  GitHub, WebDAV, CalDAV, and SMB are example service adapters.
+- **DataDistribution** coordinates distribution of settings and user data,
+  including synchronization across one user's devices and explicit sharing
+  with other people or a family.
 
 ## Repository structure
 
 ```text
 docs/
-  architecture.md       Stable boundaries and dependency rules
-  modules.md            Planned and accepted shared capabilities
+  architecture.md
+  modules.md
 src/
-  dotnet/               .NET implementations, independent of Avalonia
-  swift/                Swift implementations, independent of SwiftUI
+  LocalSettings/
+  ServiceAccess/
+  DataDistribution/
 ```
 
-Concrete packages will be added only after their responsibilities and public
-contracts have been defined. Platform implementations may differ internally,
-but equivalent capabilities should follow the same documented semantics where
-that is practical.
+Each module is self-contained. Its future source layout may include a portable
+Swift core plus explicit platform, UI-integration, interop, test, and build
+areas. Swift is the default implementation language for shared behavior on all
+supported platforms. .NET code is added where managed bindings or Avalonia UI
+integration require it; it is not a separate parallel implementation root.
+
+## Core and UI boundary
+
+A module's core must not depend on SwiftUI, Avalonia, or an application.
+Optional reusable UI integration may live beside the core in a separate target
+and depend on it. UI integration must remain optional, must not contain a
+complete application workflow, and must satisfy the same multi-application
+admission rule as every other Foundation capability.
 
 ## Module admission rule
 
-A library belongs in Dokoni Foundation when at least two Dokoni ecosystem
-applications need the capability and the capability can remain independent of
-their user interfaces and application-specific workflows.
+A library or optional integration belongs in Dokoni Foundation when at least
+two Dokoni ecosystem applications need it and it can remain independent of
+their product-specific workflows.
 
-Libraries needed by only one application stay in that application's
-repository. General-purpose third-party libraries remain external dependencies
-rather than being copied into this repository.
+Code needed by only one application stays in that application's repository.
+General-purpose third-party libraries remain external dependencies rather than
+being copied into this repository.
 
 ## Documentation and website
 
