@@ -3,12 +3,11 @@
 DataStorage performs storage operations through typed connections supplied by
 ResourceAccess without knowing the application's data format.
 
-## Initial structure
+## Source structure
 
-- `Models/` contains storage identifiers, locations, and storage errors.
-- `Sources/` contains the first Swift byte-stream API.
-- `Store/` records future storage operation implementations.
-- `API/` records the interface exposed to other modules.
+- `Sources/API/` contains the receiver contract.
+- `Sources/Models/` contains DataStorage-owned operation errors.
+- `Sources/Operations/` contains the byte-stream reader.
 
 The current `DataStorageReader` forwards configurable chunks to a
 `DataStreamReceiver`. It closes operation-scoped connections on success and

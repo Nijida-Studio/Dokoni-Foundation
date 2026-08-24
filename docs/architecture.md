@@ -37,14 +37,15 @@ The first concrete structure is intentionally small:
 ```text
 src/<Library>/
   README.md
-  API/
-  Models/
-  Store/
+  Sources/
+    <responsibility-specific groups when needed>
 ```
 
-- `Models/` describes the data owned by the module.
-- `Store/` contains storage or management responsibilities owned by the module.
-- `API/` describes the interface through which other modules use it.
+- Every compiled Swift file is below the module's `Sources/` directory.
+- `API/`, `Models/`, `Operations/`, and `Connectors/` are optional
+  internal organization beneath `Sources/`, not parallel module roots.
+- Empty placeholder directories are not created before an implementation needs
+  them.
 
 Platform, UI, binding, test, and build areas are added later when concrete code
 requires them. Build-system target boundaries may refine this logical layout

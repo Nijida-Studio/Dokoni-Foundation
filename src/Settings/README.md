@@ -16,3 +16,12 @@ The module:
 
 ResourceAccess opens the resource, and DataStorage streams its contents.
 Settings owns the meaning and later parsing of those contents.
+
+## Source structure
+
+- `Sources/API/` contains location resolution and stream reception.
+- `Sources/Models/` contains operating-system, defaults, and bootstrap-plan
+  models.
+
+Settings has no `Store/` group because it does not open or persist resources
+itself.

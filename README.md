@@ -30,20 +30,30 @@ docs/
   modules.md
 src/
   ResourceAccess/
+    README.md
+    Sources/
+      API/
+      Models/
+      Connectors/
   DataStorage/
-    API/
-    Models/
-    Store/
+    README.md
+    Sources/
+      API/
+      Models/
+      Operations/
   Settings/
-    API/
-    Models/
-    Store/
+    README.md
+    Sources/
+      API/
+      Models/
   DataDistribution/
+    README.md
 ```
 
-The first module structures contain only responsibilities that are already
-known. Platform, UI, interop, test, and build areas are added when concrete
-implementation requires them.
+All compiled Swift files live below their module's `Sources/` directory.
+Subdirectories such as `API/`, `Models/`, `Operations/`, or
+`Connectors/` are created only when code with that responsibility exists.
+Modules without an implementation do not carry empty source placeholders.
 
 Swift is the default implementation language for shared behavior on all
 supported platforms. .NET code is added where managed bindings or Avalonia UI

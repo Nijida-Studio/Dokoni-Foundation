@@ -18,14 +18,6 @@ equivalent or enable sharing implicitly.
 DataDistribution may use Settings for configuration, ResourceAccess for
 managed sources, and DataStorage for storage operations.
 
-## Planned internal structure
-
-The portable implementation is written in Swift. Concrete code may introduce
-separate targets under `Sources/Core`, `Sources/Platforms/<Platform>`,
-`Sources/UI/SwiftUI`, `Sources/UI/Avalonia`, and
-`Sources/Interop/<Binding>`. General build instructions belong under
-`Build/README.md`; platform additions belong in separate files under
-`Build/`.
-
-Public APIs remain undefined until data ownership, encryption, conflict,
-consent, and consumer requirements are documented.
+No `Sources/` directory exists yet because the public contract remains
+undefined. Source groups and targets are added only after data ownership,
+encryption, conflict, consent, and consumer requirements are documented.
