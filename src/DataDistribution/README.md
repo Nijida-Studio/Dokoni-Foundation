@@ -15,8 +15,8 @@ Device synchronization, sharing with another person, and family sharing are
 distinct authorization and privacy cases. The module must not treat them as
 equivalent or enable sharing implicitly.
 
-DataDistribution may use LocalSettings for local state and ServiceAccess for
-transports or provider access.
+DataDistribution may use Settings for configuration, ResourceAccess for
+managed sources, and DataStorage for storage operations.
 
 ## Planned internal structure
 

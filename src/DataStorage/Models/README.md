@@ -1,6 +1,7 @@
 # DataStorage Models
 
-This directory will contain the minimal models required to identify stored data
-and represent storage results or errors.
+The first byte-stream slice needs no DataStorage-owned location model:
+ResourceAccess owns resource requests and connections.
 
-The content format is deliberately not modeled here.
+Models will be added only when a storage operation needs them. Application
+content formats remain deliberately outside DataStorage.

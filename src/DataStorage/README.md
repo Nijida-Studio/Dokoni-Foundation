@@ -1,13 +1,19 @@
 # DataStorage
 
-DataStorage reads and writes opaque data without knowing its format.
+DataStorage performs storage operations through typed connections supplied by
+ResourceAccess without knowing the application's data format.
 
 ## Initial structure
 
 - `Models/` contains storage identifiers, locations, and storage errors.
-- `Store/` contains concrete storage implementations.
-- `API/` contains the interface used to read and write data.
+- `Sources/` contains the first Swift byte-stream API.
+- `Store/` records future storage operation implementations.
+- `API/` records the interface exposed to other modules.
 
-A consuming module decodes, modifies, and encodes the content. DataStorage only
-reads it and writes the resulting data back. Platform-specific storage is added
-later behind the same API.
+The current `DataStorageReader` forwards configurable chunks to a
+`DataStreamReceiver`. It closes operation-scoped connections on success and
+failure and leaves persistent connections open for ResourceAccess to manage.
+
+A consuming module decodes, modifies, and encodes content. Future operations
+may include byte writing or structured database access; application semantics
+remain outside DataStorage.

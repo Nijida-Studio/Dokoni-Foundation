@@ -11,11 +11,13 @@ application repositories.
 
 ## Initial modules
 
-- **DataStorage** reads and writes opaque data without owning its format.
-- **LocalSettings** models, reads, modifies, and manages settings belonging to
-  the local installation. It uses DataStorage for persistence.
-- **ServiceAccess** models and manages access to local, LAN, and WAN services.
-  GitHub, WebDAV, CalDAV, and SMB are example service adapters.
+- **ResourceAccess** locates, opens, retains, and closes access to local or
+  remote resources. Local files, GitHub, WebDAV, CalDAV, SMB, and databases are
+  example resource adapters.
+- **DataStorage** performs storage operations through opened resource
+  connections without owning the data's application meaning.
+- **Settings** owns settings locations, formats, validation, and processing
+  independently of whether settings are stored locally or remotely.
 - **DataDistribution** coordinates distribution of settings and user data,
   including synchronization across one user's devices and explicit sharing
   with other people or a family.
@@ -27,15 +29,15 @@ docs/
   architecture.md
   modules.md
 src/
+  ResourceAccess/
   DataStorage/
     API/
     Models/
     Store/
-  LocalSettings/
+  Settings/
     API/
     Models/
     Store/
-  ServiceAccess/
   DataDistribution/
 ```
 
@@ -73,3 +75,22 @@ being copied into this repository.
 
 Maintained source and project documentation live on `main`. The website is
 maintained separately on `gh_pages`.
+
+## First executable slice
+
+The Swift package contains the `settings-test-app` command. On startup it
+detects the operating system through Settings, resolves
+`de.nijida.dokonie-es/settings.conf`, asks ResourceAccess to create and open
+the local file, streams it through DataStorage into a Settings receiver, and
+writes the resulting text to standard output.
+
+On macOS the default location is below the user's Application Support
+directory. Set `DOKONI_SETTINGS_ROOT` to use a temporary base directory:
+
+```sh
+DOKONI_SETTINGS_ROOT=/tmp/dokoni-settings swift run settings-test-app
+```
+
+Pass `--persistent` to select a persistent connection for the run. The
+short-lived command closes it explicitly before exiting; long-running
+applications retain it until their resource owner closes it.

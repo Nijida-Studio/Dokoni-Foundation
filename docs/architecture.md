@@ -50,22 +50,42 @@ Platform, UI, binding, test, and build areas are added later when concrete code
 requires them. Build-system target boundaries may refine this logical layout
 without changing module ownership.
 
-## Data and settings boundary
+## Resource, data, and settings boundary
 
-DataStorage reads and writes opaque data. It does not understand, decode, or
-modify the content semantically.
+ResourceAccess owns how a resource is located, authorized, opened, retained,
+and closed. A local file follows the same access flow as a remote service or
+database even though their concrete connection capabilities differ.
 
-LocalSettings owns the settings format and behavior:
+DataStorage performs storage operations through an opened, capability-specific
+connection. Its first operation streams opaque byte chunks into a
+caller-provided receiver. It does not decode or semantically modify the data.
 
 ```text
-DataStorage reads bytes
+Settings resolves the operating system, location, and receiver
         |
-LocalSettings decodes, modifies, and encodes settings
+ResourceAccess creates/opens a typed resource connection
         |
-DataStorage writes the resulting bytes
+DataStorage streams data through that connection into the receiver
+        |
+Settings decodes, validates, modifies, and encodes settings
 ```
 
-This keeps persistence locations independent from settings models and formats.
+Resource connections declare whether they are operation-scoped or persistent.
+DataStorage closes operation-scoped connections on success and failure.
+ResourceAccess retains persistent connections until explicitly closed.
+
+The common access flow does not imply one universal connection type. File
+connections expose byte capabilities; future database connections may expose
+queries, row streams, commands, and transactions.
+
+## Settings bootstrap
+
+The first executable path uses the ecosystem identifier
+`de.nijida.dokonie-es`. Settings determines the current operating system and
+resolves the shared `settings.conf` location. ResourceAccess creates the
+directory and an initially commented settings file when missing. DataStorage
+then streams the file into `SettingsTextReceiver`, after which the command
+writes the validated UTF-8 text to standard output.
 
 ## Core and UI dependency rule
 
@@ -86,21 +106,24 @@ A separate .NET reimplementation is an exception rather than the default.
 
 ```text
 DataDistribution
-  ├──> LocalSettings
-  └──> ServiceAccess
+  ├──> Settings
+  ├──> DataStorage
+  └──> ResourceAccess
 
-ServiceAccess
-  └──> LocalSettings (non-secret connection metadata only)
-
-LocalSettings
+Settings
   └──> DataStorage
 
 DataStorage
+  └──> ResourceAccess
+
+ResourceAccess
   └──> no other Foundation module
 ```
 
-Credentials and secrets are not ordinary settings. ServiceAccess refers to
+Credentials and secrets are not ordinary settings. ResourceAccess refers to
 secure platform credential storage through an explicit abstraction.
+ResourceAccess never loads Settings itself; callers supply already resolved
+access requests, which prevents a bootstrap dependency cycle.
 
 ## Module lifecycle
 

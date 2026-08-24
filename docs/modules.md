@@ -5,48 +5,54 @@ open until the first contracts and consumers are defined.
 
 ## DataStorage
 
-**Status:** Accepted module; public API not yet defined
+**Status:** First byte-stream read API implemented
 
-DataStorage reads and writes opaque data without owning the data format.
+DataStorage performs storage operations using typed connections supplied by
+ResourceAccess. It does not own the application meaning of the data.
 
-It should define:
+The first API defines:
 
-- identifiers or locations for stored data,
-- reading data,
-- writing or replacing data,
-- absence and storage errors,
-- atomic replacement where supported,
-- storage implementations supplied later for concrete platforms or locations.
+- configurable chunked reading,
+- caller-provided stream receivers,
+- completion and error propagation,
+- automatic closing of operation-scoped connections,
+- reuse of explicitly persistent connections.
 
 DataStorage does not decode or semantically modify the data. The consuming
 module owns its format and transforms the content before writing it back.
+Future adapters may add writing, SQL row streams, commands, and transactions
+without placing source connection management in DataStorage.
 
-## LocalSettings
+## Settings
 
-**Status:** Initial structure established; public API not yet defined
+**Status:** First local settings bootstrap implemented
 
-LocalSettings owns settings models, their format, the settings store, and the
-interface used by other modules.
+Settings owns settings models, locations, formats, validation, and processing
+regardless of whether persistence is local or remote.
 
-Its first structure is:
+The first implementation provides:
 
-- `Models/` for settings data,
-- `Store/` for reading, modifying, and managing settings through DataStorage,
-- `API/` for queries and changes requested by other modules.
+- current operating-system detection,
+- shared path resolution for `de.nijida.dokonie-es/settings.conf`,
+- the initial commented file contents,
+- a UTF-8 stream receiver,
+- a bootstrap read plan consumed by the command-line test app.
 
 Credentials and secrets are not ordinary settings. Synchronization and sharing
 belong to DataDistribution.
 
-## ServiceAccess
+## ResourceAccess
 
-**Status:** Accepted module; public API not yet defined
+**Status:** First local-file connector implemented
 
-ServiceAccess models and manages access to services reachable locally, through
-a LAN, or through a WAN. Examples include GitHub, WebDAV, CalDAV, and SMB.
+ResourceAccess manages access to local and remote data sources. It owns resource
+location, authorization, connection creation, lifetime, reuse, and closing.
+Examples include local files, GitHub, WebDAV, CalDAV, SMB, and databases.
 
-ServiceAccess provides access to services; it does not own Kizuna
-synchronization, Souran DevOps workflows, or another application's product
-logic.
+Its first adapter creates missing local directories and files, opens a
+serialized file connection, and supports operation-scoped or persistent
+lifetimes. ResourceAccess does not own storage decoding, Kizuna
+synchronization, Souran workflows, or application product logic.
 
 ## DataDistribution
 
@@ -56,8 +62,8 @@ DataDistribution coordinates how settings and user data move beyond one local
 installation. It distinguishes same-user device synchronization, provider
 distribution, sharing with another person, and family sharing.
 
-DataDistribution may use LocalSettings for local state and ServiceAccess for
-transports and provider access.
+DataDistribution may use Settings for configuration, ResourceAccess for
+managed sources, and DataStorage for storage operations.
 
 ## Optional UI integration
 
@@ -68,6 +74,6 @@ applications.
 
 ## Admission and implementation status
 
-The four modules are accepted as the initial Foundation structure. Before
-concrete public APIs are finalized, their first consumers, supported platforms,
-target boundaries, test contracts, and release channels must be recorded.
+The four modules are accepted as the initial Foundation structure. The first
+Swift package slice implements local settings reading on macOS and models
+Linux, Windows, Android, and iOS path selection for later platform builds.
