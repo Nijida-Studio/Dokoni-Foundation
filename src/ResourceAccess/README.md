@@ -25,3 +25,7 @@ platform abstractions when future resource types require authentication.
 - `Sources/API/` contains resource capability contracts.
 - `Sources/Models/` contains requests, lifetimes, and access errors.
 - `Sources/Connectors/LocalFile/` contains the first concrete connector.
+
+See the [developer handbook](../../docs/DeveloperGuide.md) for connector
+admission, credential, lifetime, and concurrency rules. The generated symbol
+reference starts at `Sources/ResourceAccess.docc`.

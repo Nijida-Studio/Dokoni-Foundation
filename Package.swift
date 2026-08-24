@@ -1,4 +1,5 @@
 // swift-tools-version: 6.0
+// ODTS TASK: https://github.com/Nijida-Studio/Dokoni-Foundation/issues/4
 
 import PackageDescription
 
@@ -16,17 +17,20 @@ let package = Package(
     targets: [
         .target(
             name: "ResourceAccess",
-            path: "src/ResourceAccess/Sources"
+            path: "src/ResourceAccess/Sources",
+            exclude: ["ResourceAccess.docc"]
         ),
         .target(
             name: "DataStorage",
             dependencies: ["ResourceAccess"],
-            path: "src/DataStorage/Sources"
+            path: "src/DataStorage/Sources",
+            exclude: ["DataStorage.docc"]
         ),
         .target(
             name: "Settings",
             dependencies: ["DataStorage"],
-            path: "src/Settings/Sources"
+            path: "src/Settings/Sources",
+            exclude: ["Settings.docc"]
         ),
         .executableTarget(
             name: "SettingsTestApp",

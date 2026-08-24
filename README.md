@@ -79,9 +79,17 @@ being copied into this repository.
 
 ## Documentation and website
 
+- Developer handbook: [`docs/DeveloperGuide.md`](docs/DeveloperGuide.md)
+- ODTS traceability: [`docs/ODTSTraceability.md`](docs/ODTSTraceability.md)
+- Contribution and documentation rules: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - Architecture: [`docs/architecture.md`](docs/architecture.md)
 - Module catalog: [`docs/modules.md`](docs/modules.md)
+- DataDistribution boundary: [`docs/DataDistribution.md`](docs/DataDistribution.md)
 - Project website: <https://foundation.nijida.de>
+
+The three implemented libraries also contain DocC catalogs. Together with the
+symbol comments they form the generated API reference; the developer handbook
+explains cross-module workflows and design decisions.
 
 Maintained source and project documentation live on `main`. The website is
 maintained separately on `gh_pages`.

@@ -25,3 +25,7 @@ Settings owns the meaning and later parsing of those contents.
 
 Settings has no `Store/` group because it does not open or persist resources
 itself.
+
+See the [developer handbook](../../docs/DeveloperGuide.md) for bootstrap and
+platform-location behavior. The generated symbol reference starts at
+`Sources/Settings.docc`.

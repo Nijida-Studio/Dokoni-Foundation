@@ -21,3 +21,6 @@ managed sources, and DataStorage for storage operations.
 No `Sources/` directory exists yet because the public contract remains
 undefined. Source groups and targets are added only after data ownership,
 encryption, conflict, consent, and consumer requirements are documented.
+
+The detailed admission checklist and dependency boundary are recorded in
+[DataDistribution Developer Boundary](../../docs/DataDistribution.md).

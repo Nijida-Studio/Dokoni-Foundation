@@ -16,3 +16,7 @@ failure and leaves persistent connections open for ResourceAccess to manage.
 A consuming module decodes, modifies, and encodes content. Future operations
 may include byte writing or structured database access; application semantics
 remain outside DataStorage.
+
+See the [developer handbook](../../docs/DeveloperGuide.md) for lifecycle and
+cleanup rules. The generated symbol reference starts at the DataStorage DocC
+catalog in `Sources/DataStorage.docc`.
